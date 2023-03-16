@@ -11,3 +11,8 @@ canvas {
   border: 1px solid #FFFFFF;
 }
 
+canvas {
+  background-color: #000000;
+  display: block;
+  margin: 0 auto;
+}
