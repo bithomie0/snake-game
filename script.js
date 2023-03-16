@@ -34,11 +34,16 @@ window.onload = function() {
     snake.changeDirection(direction);
   });
 
-  canvas.addEventListener("touchend", (event) => {
-    const startX = event.touches[0].clientX;
-    const startY = event.touches[0].clientY;
+  let startX = 0;
+  let startY = 0;
 
-    const direction = getSwipeDirection(event, startX, startY); // Pass the event as an argument
+  canvas.addEventListener("touchstart", (event) => {
+    startX = event.touches[0].clientX;
+    startY = event.touches[0].clientY;
+  });
+
+  canvas.addEventListener("touchend", (event) => {
+    const direction = getSwipeDirection(event, startX, startY);
     if (direction) {
       snake.changeDirection(direction);
     }
@@ -46,7 +51,8 @@ window.onload = function() {
 
 
 
-  function getSwipeDirection(event, startX, startY) { // Add the event as an argument
+
+  function getSwipeDirection(event, startX, startY) {
     const endX = event.changedTouches[0].clientX;
     const endY = event.changedTouches[0].clientY;
 
@@ -58,7 +64,8 @@ window.onload = function() {
     } else {
       return deltaY > 0 ? "Down" : "Up";
     }
-}
+  }
+
 
 
   function Snake() {
