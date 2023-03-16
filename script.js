@@ -1,90 +1,36 @@
-const canvas = document.getElementById("game-board");
-const ctx = canvas.getContext("2d");
+// ... (previous code) ...
 
-const tileSize = 20;
-const snakeSpeed = 100;
-const snake = [{ x: 200, y: 200 }];
-let direction = "ArrowRight";
-let food = createFood();
+// Remove the keyboard event listener
+// document.addEventListener("keydown", (event) => { ...
 
-setInterval(main, snakeSpeed);
+// Add touch event listeners for mobile devices
+let touchStartX = 0;
+let touchStartY = 0;
 
-function main() {
-    update();
-    draw();
-}
+canvas.addEventListener("touchstart", (event) => {
+    touchStartX = event.touches[0].clientX;
+    touchStartY = event.touches[0].clientY;
+});
 
-function update() {
-    updateSnake();
-    checkFoodCollision();
-}
+canvas.addEventListener("touchmove", (event) => {
+    event.preventDefault();
+    const touchEndX = event.touches[0].clientX;
+    const touchEndY = event.touches[0].clientY;
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+    const swipeThreshold = 50;
 
-function draw() {
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    drawSnake();
-    drawFood();
-}
-
-function updateSnake() {
-    const head = { ...snake[0] };
-
-    switch (direction) {
-        case "ArrowUp":
-            head.y -= tileSize;
-            break;
-        case "ArrowDown":
-            head.y += tileSize;
-            break;
-        case "ArrowLeft":
-            head.x -= tileSize;
-            break;
-        case "ArrowRight":
-            head.x += tileSize;
-            break;
-    }
-
-    snake.unshift(head);
-    snake.pop();
-}
-
-function drawSnake() {
-    ctx.fillStyle = "lime";
-
-    for (const segment of snake) {
-        ctx.fillRect(segment.x, segment.y, tileSize, tileSize);
-    }
-}
-
-function createFood() {
-    return {
-        x: Math.floor(Math.random() * (canvas.width / tileSize)) * tileSize,
-        y: Math.floor(Math.random() * (canvas.height / tileSize)) * tileSize,
-    };
-}
-
-function checkFoodCollision() {
-    const head = snake[0];
-
-    if (head.x === food.x && head.y === food.y) {
-        food = createFood();
-        snake.push({ x: -tileSize, y: -tileSize });
-    }
-}
-
-function drawFood() {
-    ctx.fillStyle = "red";
-    ctx.fillRect(food.x, food.y, tileSize, tileSize);
-}
-
-document.addEventListener("keydown", (event) => {
-    if (
-        (event.key === "ArrowUp" && direction !== "ArrowDown") ||
-        (event.key === "ArrowDown" && direction !== "ArrowUp") ||
-        (event.key === "ArrowLeft" && direction !== "ArrowRight") ||
-        (event.key === "ArrowRight" && direction !== "ArrowLeft")
-    ) {
-        direction = event.key;
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (deltaX > swipeThreshold && direction !== "ArrowLeft") {
+            direction = "ArrowRight";
+        } else if (deltaX < -swipeThreshold && direction !== "ArrowRight") {
+            direction = "ArrowLeft";
+        }
+    } else {
+        if (deltaY > swipeThreshold && direction !== "ArrowUp") {
+            direction = "ArrowDown";
+        } else if (deltaY < -swipeThreshold && direction !== "ArrowDown") {
+            direction = "ArrowUp";
+        }
     }
 });
