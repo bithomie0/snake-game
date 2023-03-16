@@ -182,4 +182,3 @@ function updateScoreboard(score) {
   
   document.getElementById('high-score').innerText = `High Score: ${highScore}`;
 }
-}
