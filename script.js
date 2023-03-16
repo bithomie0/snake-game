@@ -35,6 +35,7 @@ document.addEventListener("keydown", (event) => {
 });
 
 canvas.addEventListener("touchstart", (event) => {
+  event.preventDefault();
   const startX = event.touches[0].clientX;
   const startY = event.touches[0].clientY;
 
@@ -59,8 +60,8 @@ function getSwipeDirection(startX, startY) {
 }
 
 function Snake() {
-  this.x = columns / 2 * scale;
-  this.y = rows / 2 * scale;
+  this.x = Math.floor(columns / 2) * scale;
+  this.y = Math.floor(rows / 2) * scale;
   this.xSpeed = scale;
   this.ySpeed = 0;
   this.total = 0;
