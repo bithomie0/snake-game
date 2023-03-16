@@ -10,37 +10,19 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: black;
       margin: 0;
+      background-color: #000;
     }
-
-    #game {
-      border: 1px solid white;
-    }
-
-    #scoreboard {
-      color: white;
-      font-size: 24px;
-      margin-bottom: 8px;
+    canvas {
+      border: 1px solid #fff;
     }
   </style>
 </head>
 <body>
   <div>
-    <div id="scoreboard">Score: 0</div>
+    <h1 id="scoreboard" style="color: white">Score: 0</h1>
     <canvas id="game" width="400" height="400"></canvas>
   </div>
-  <script>
-    const canvas = document.getElementById("game");
-    const context = canvas.getContext("2d");
-    const scoreboard = document.getElementById("scoreboard"); // Add this line
-
-    // ... (The rest of your existing JavaScript code)
-
-    function updateScoreboard(score) {
-      scoreboard.textContent = "Score: " + score;
-    }
-  </script>
+  <script src="snake.js"></script>
 </body>
 </html>
-
