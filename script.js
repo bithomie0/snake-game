@@ -11,6 +11,7 @@ window.onload = function() {
   let fruit;
 
   (function setup() {
+    updateScoreboard(0);
     snake = new Snake();
     fruit = new Fruit();
 
