@@ -8,13 +8,20 @@ const columns = canvas.width / scale;
 
 let snake;
 let fruit;
+let highScore = 0;
 
 (function setup() {
   snake = new Snake();
   fruit = new Fruit();
 
   fruit.pickLocation();
-
+  
+  if (localStorage.getItem('highScore')) {
+    highScore = parseInt(localStorage.getItem('highScore'));
+  } else {
+    highScore = 0;
+  }
+  
   window.setInterval(() => {
     context.clearRect(0, 0, canvas.width, canvas.height);
     fruit.draw();
@@ -167,4 +174,12 @@ function Fruit() {
 
 function updateScoreboard(score) {
   scoreboard.textContent = "Score: " + score;
+  
+  if (score > highScore) {
+   highScore = score;
+   localStorage.setItem('highScore', highScore);
+  }
+  
+  document.getElementById('high-score').innerText = `High Score: ${highScore}`;
+}
 }
