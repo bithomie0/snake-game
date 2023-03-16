@@ -1,6 +1,7 @@
 window.onload = function() {
   const canvas = document.getElementById("game");
   const context = canvas.getContext("2d");
+  const scoreboard = document.getElementById("scoreboard");
 
   const scale = 20;
   const rows = canvas.height / scale;
@@ -148,6 +149,7 @@ window.onload = function() {
     this.eat = function (fruit) {
       if (this.x === fruit.x && this.y === fruit.y) {
         this.total++;
+        updateScoreboard(this.total);
         return true;
       }
       return false;
@@ -178,3 +180,6 @@ window.onload = function() {
     };
   }
  }; 
+function updateScoreboard(score) {
+  scoreboard.textContent = "Score: " + score;
+}
