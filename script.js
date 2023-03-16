@@ -34,15 +34,16 @@ window.onload = function() {
     snake.changeDirection(direction);
   });
 
-  canvas.addEventListener("touchstart", (event) => {
+  canvas.addEventListener("touchend", (event) => {
     const startX = event.touches[0].clientX;
     const startY = event.touches[0].clientY;
 
     const direction = getSwipeDirection(event, startX, startY); // Pass the event as an argument
     if (direction) {
       snake.changeDirection(direction);
-  }
-});
+    }
+  });
+
 
 
   function getSwipeDirection(event, startX, startY) { // Add the event as an argument
