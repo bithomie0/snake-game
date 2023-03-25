@@ -158,6 +158,8 @@ function Snake() {
   };
 }
 
+// ...
+
 function Fruit() {
   this.x;
   this.y;
@@ -167,7 +169,7 @@ function Fruit() {
     do {
       this.x = (Math.floor(Math.random() * columns)) * scale;
       this.y = (Math.floor(Math.random() * rows)) * scale;
-      validLocation = !snake.tail.some(segment => segment.x === this.x && segment.y === this.y);
+      validLocation = !snake.tail.some(segment => segment.x === this.x && segment.y === this.y) && this.x !== snake.x && this.y !== snake.y;
     } while (!validLocation);
   };
 
@@ -176,6 +178,9 @@ function Fruit() {
     context.fillRect(this.x, this.y, scale, scale);
   };
 }
+
+// ...
+
 
 function updateScoreboard(score) {
   scoreboard.textContent = "Score: " + score;
