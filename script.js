@@ -46,13 +46,14 @@ canvas.addEventListener("touchstart", (event) => {
   const startX = event.touches[0].clientX;
   const startY = event.touches[0].clientY;
 
-  const direction = getSwipeDirection(startX, startY);
+  const direction = getSwipeDirection(event, startX, startY); // Pass the event variable here
   if (direction) {
     snake.changeDirection(direction);
   }
 });
 
-function getSwipeDirection(startX, startY) {
+
+function getSwipeDirection(event, startX, startY) { // Add event as an argument
   const endX = event.changedTouches[0].clientX;
   const endY = event.changedTouches[0].clientY;
 
