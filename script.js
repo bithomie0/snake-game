@@ -24,16 +24,20 @@ let highScore = 0;
   
   window.setInterval(() => {
     context.clearRect(0, 0, canvas.width, canvas.height);
-    fruit.draw();
+
     snake.update();
     snake.draw();
 
     if (snake.eat(fruit)) {
-      fruit.pickLocation();
+      do {
+        fruit.pickLocation();
+      } while (snake.tail.some(segment => segment.x === fruit.x && segment.y === fruit.y));
     }
 
+    fruit.draw();
     snake.checkCollision();
-  }, 250);
+}, 250);
+
 })();
 
 document.addEventListener("keydown", (event) => {
@@ -141,15 +145,16 @@ function Snake() {
 
   // ...
 
-  this.eat = function (fruit) {
+    this.eat = function (fruit) {
     if (this.x === fruit.x && this.y === fruit.y) {
       this.total++;
       updateScoreboard(this.total);
-      fruit.pickLocation(); // Move this line here
+      fruit.pickLocation(); // generate new fruit
       return true;
     }
     return false;
   };
+
 
 // ...
 
