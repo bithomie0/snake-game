@@ -182,3 +182,23 @@ function updateScoreboard(score) {
   
   document.getElementById('high-score').innerText = `High Score: ${highScore}`;
 }
+
+canvas.addEventListener("click", (event) => {
+  const clickX = event.clientX - canvas.getBoundingClientRect().left;
+  const clickY = event.clientY - canvas.getBoundingClientRect().top;
+
+  const direction = getMouseDirection(clickX, clickY);
+  snake.changeDirection(direction);
+});
+
+function getMouseDirection(clickX, clickY) {
+  const deltaX = clickX - snake.x;
+  const deltaY = clickY - snake.y;
+
+  if (Math.abs(deltaX) > Math.abs(deltaY)) {
+    return deltaX > 0 ? "Right" : "Left";
+  } else {
+    return deltaY > 0 ? "Down" : "Up";
+  }
+}
+
