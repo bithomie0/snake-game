@@ -139,14 +139,20 @@ function Snake() {
     }
   };
 
+  // ...
+
   this.eat = function (fruit) {
     if (this.x === fruit.x && this.y === fruit.y) {
       this.total++;
       updateScoreboard(this.total);
+      fruit.pickLocation(); // Move this line here
       return true;
     }
     return false;
   };
+
+// ...
+
 
   this.checkCollision = function () {
     for (let i = 0; i < this.tail.length; i++) {
