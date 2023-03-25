@@ -163,8 +163,12 @@ function Fruit() {
   this.y;
 
   this.pickLocation = function () {
-    this.x = (Math.floor(Math.random() * columns)) * scale;
-    this.y = (Math.floor(Math.random() * rows)) * scale;
+    let validLocation;
+    do {
+      this.x = (Math.floor(Math.random() * columns)) * scale;
+      this.y = (Math.floor(Math.random() * rows)) * scale;
+      validLocation = !snake.tail.some(segment => segment.x === this.x && segment.y === this.y);
+    } while (!validLocation);
   };
 
   this.draw = function () {
