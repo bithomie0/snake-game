@@ -149,11 +149,23 @@ function Snake() {
       if (this.x === fruit.x && this.y === fruit.y) {
         this.total++;
         updateScoreboard(this.total);
+        fruit.eaten = true; // mark the fruit as eaten
         fruit.pickLocation(); // generate new fruit
         return true;
       }
       return false;
     };
+
+this.eat = function (fruit) {
+  if (this.x === fruit.x && this.y === fruit.y) {
+    this.total++;
+    updateScoreboard(this.total);
+    fruit.eaten = true; // mark the fruit as eaten
+    fruit.pickLocation(); // generate new fruit
+    return true;
+  }
+  return false;
+};
 
 
 // ...
@@ -174,6 +186,7 @@ function Snake() {
 function Fruit() {
   this.x;
   this.y;
+  this.eaten = false;
 
   this.pickLocation = function () {
     let validLocation;
@@ -182,11 +195,15 @@ function Fruit() {
       this.y = (Math.floor(Math.random() * rows)) * scale;
       validLocation = !snake.tail.some(segment => segment.x === this.x && segment.y === this.y) && (this.x !== snake.x || this.y !== snake.y);
     } while (!validLocation);
+
+    this.eaten = false;
   };
 
   this.draw = function () {
-    context.fillStyle = "#FF0000";
-    context.fillRect(this.x, this.y, scale, scale);
+    if (!this.eaten) {
+      context.fillStyle = "#FF0000";
+      context.fillRect(this.x, this.y, scale, scale);
+    }
   };
 }
 
