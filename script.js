@@ -146,15 +146,14 @@ function Snake() {
   // ...
 
     this.eat = function (fruit) {
-    if (this.x === fruit.x && this.y === fruit.y) {
-      this.total++;
-      updateScoreboard(this.total);
-      fruit.pickLocation(); // generate new fruit
-      return true;
-    }
-    return false;
-  };
-
+      if (this.x === fruit.x && this.y === fruit.y) {
+        this.total++;
+        updateScoreboard(this.total);
+        fruit.pickLocation(); // generate new fruit
+        return true;
+      }
+      return false;
+    };
 
 
 // ...
