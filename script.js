@@ -160,19 +160,6 @@ function Snake() {
       return false;
     };
 
-
-this.eat = function (fruit) {
-  if (this.x === fruit.x && this.y === fruit.y) {
-    this.total++;
-    updateScoreboard(this.total);
-    fruit.eaten = true; // mark the fruit as eaten
-    fruit.pickLocation(); // generate new fruit
-    return true;
-  }
-  return false;
-};
-
-
 // ...
 
 
