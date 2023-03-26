@@ -150,7 +150,7 @@ function Snake() {
   // ...
 
     this.eat = function (fruit) {
-      if (this.x === fruit.x && this.y === fruit.y) {
+      if (this.x === fruit.x && this.y === fruit.y && !fruit.eaten) { // check if fruit has not been eaten
         this.total++;
         updateScoreboard(this.total);
         fruit.eaten = true; // mark the fruit as eaten
@@ -159,6 +159,7 @@ function Snake() {
       }
       return false;
     };
+
 
 this.eat = function (fruit) {
   if (this.x === fruit.x && this.y === fruit.y) {
