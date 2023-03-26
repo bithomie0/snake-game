@@ -116,7 +116,13 @@ function Snake() {
     } else if (this.y > canvas.height - scale) {
       this.y = 0;
     }
+
+    if (fruit.eaten) { // check if the current fruit has been eaten
+      fruit.pickLocation();
+      fruit.eaten = false; // mark the new fruit as not eaten
+    }
   };
+
 
   this.changeDirection = function (direction) {
     switch (direction) {
@@ -150,15 +156,15 @@ function Snake() {
   // ...
 
     this.eat = function (fruit) {
-      if (this.x === fruit.x && this.y === fruit.y && !fruit.eaten) { // check if fruit has not been eaten
+      if (this.x === fruit.x && this.y === fruit.y) {
         this.total++;
         updateScoreboard(this.total);
         fruit.eaten = true; // mark the fruit as eaten
-        fruit.pickLocation(); // generate new fruit
         return true;
       }
       return false;
     };
+
 
 // ...
 
