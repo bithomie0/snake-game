@@ -176,13 +176,14 @@ function Fruit() {
   this.y;
 
   this.pickLocation = function () {
+    console.log('pickLocation called')
     let validLocation;
     do {
-      this.x = (Math.floor(Math.random() * columns)) * scale;
-      this.y = (Math.floor(Math.random() * rows)) * scale;
-      validLocation = !snake.tail.some(segment => segment.x === this.x && segment.y === this.y) && this.x !== snake.x && this.y !== snake.y;
+        this.x = (Math.floor(Math.random() * columns)) * scale;
+        this.y = (Math.floor(Math.random() * rows)) * scale;
+        validLocation = !snake.tail.some(segment => segment.x === this.x && segment.y === this.y) && this.x !== snake.x && this.y !== snake.y;
     } while (!validLocation);
-  };
+};
 
   this.draw = function () {
     context.fillStyle = "#FF0000";
