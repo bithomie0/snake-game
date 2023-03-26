@@ -197,7 +197,7 @@ function Fruit() {
       validLocation = !snake.tail.some(segment => segment.x === this.x && segment.y === this.y) && (this.x !== snake.x || this.y !== snake.y);
     } while (!validLocation);
 
-    this.eaten = false;
+    this.eaten = false; // set eaten property to false
   };
 
   this.draw = function () {
