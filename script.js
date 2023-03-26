@@ -184,6 +184,7 @@ function Fruit() {
     } while (!validLocation);
   };
 
+
   this.draw = function () {
     context.fillStyle = "#FF0000";
     context.fillRect(this.x, this.y, scale, scale);
