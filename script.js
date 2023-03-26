@@ -15,6 +15,7 @@ let highScore = 0;
   fruit = new Fruit();
 
   fruit.pickLocation();
+  fruit.eaten = false; // Set the initial fruit as not eaten
   
   if (localStorage.getItem('highScore')) {
     highScore = parseInt(localStorage.getItem('highScore'));
@@ -32,13 +33,16 @@ let highScore = 0;
       do {
         fruit.pickLocation();
       } while (snake.tail.some(segment => segment.x === fruit.x && segment.y === fruit.y));
+      
+      fruit.eaten = false; // Mark the new fruit as not eaten
     }
 
     fruit.draw();
     snake.checkCollision();
-}, 250);
+  }, 250);
 
 })();
+
 
 document.addEventListener("keydown", (event) => {
   const direction = event.key.replace("Arrow", "");
