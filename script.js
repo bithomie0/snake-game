@@ -159,11 +159,14 @@ function Snake() {
       if (this.x === fruit.x && this.y === fruit.y) {
         this.total++;
         updateScoreboard(this.total);
-        fruit.eaten = true; // mark the fruit as eaten
+        fruit.eaten = true;
+        fruit.pickLocation();
+        fruit.eaten = false;
         return true;
       }
       return false;
     };
+
 
 
 // ...
