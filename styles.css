@@ -1,18 +1,20 @@
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
-  background-color: #000000;
-}
-
-canvas {
-  border: 1px solid #FFFFFF;
-}
-
-canvas {
-  background-color: #000000;
+#game {
   display: block;
-  margin: 0 auto;
+  margin: auto;
+  background-color: #000;
+}
+
+#scoreboard {
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  color: #fff;
+  font-size: 24px;
+}
+
+#high-score {
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 10px;
 }
