@@ -1,28 +1,213 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Snake Game</title>
   <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #000;
-    }
     canvas {
-      border: 1px solid #fff;
+      border: 1px solid #ccc;
+    }
+    #scoreboard {
+      margin-top: 10px;
+      font-size: 20px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div>
-    <h1 id="scoreboard" style="color: white">Score: 0</h1>
-    <canvas id="game" width="400" height="400"></canvas>
-  </div>
-  <script src="script.js"></script>
-</body>
-</html>
+  <canvas id="game" width="400" height="400"></canvas>
+  <div id="scoreboard"></div>
+
+  <script>
+    const canvas = document.getElementById('game');
+    const context = canvas.getContext('2d');
+    const scoreboard = document.getElementById('scoreboard');
+
+    const scale = 10;
+    const rows = canvas.height / scale;
+    const columns = canvas.width / scale;
+
+    let snake = new Snake();
+    let fruit = new Fruit();
+    let score = 0;
+
+    function setup() {
+      setInterval(() => {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        snake.update();
+        fruit.draw();
+        snake.draw();
+        if (snake.eat(fruit)) {
+          fruit.pickLocation();
+          score++;
+          scoreboard.textContent = 'Score: ' + score;
+        }
+        snake.checkCollision();
+      }, 100);
+    }
+
+    function Snake() {
+      this.x = 0;
+      this.y = 0;
+      this.xSpeed = scale;
+      this.ySpeed = 0;
+      this.total = 0;
+      this.tail = [];
+
+      this.draw = function() {
+        context.fillStyle = 'green';
+        for (let i=0; i<this.tail.length; i++) {
+          context.fillRect(this.tail[i].x, this.tail[i].y, scale, scale);
+        }
+        context.fillRect(this.x, this.y, scale, scale);
+      }
+
+      this.update = function() {
+        for (let i=0; i<this.tail.length - 1; i++) {
+          this.tail[i] = this.tail[i+1];
+        }
+
+        if (this.total > 0) {
+          this.tail[this.total-1] = { x: this.x, y: this.y };
+        }
+
+        this.x += this.xSpeed;
+        this.y += this.ySpeed;
+
+        if (this.x >= canvas.width) {
+          this.x = 0;
+        }
+
+        if (this.y >= canvas.height) {
+          this.y = 0;
+        }
+
+        if (this.x < 0) {
+          this.x = canvas.width - scale;
+        }
+
+        if (this.y < 0) {
+          this.y = canvas.height - scale;
+        }
+      }
+
+      this.changeDirection = function(direction) {
+        switch(direction) {
+          case 'Up':
+            this.xSpeed = 0;
+            this.ySpeed = -scale;
+            break;
+          case 'Down':
+            this.xSpeed = 0;
+            this.ySpeed = scale;
+            break;
+          case 'Left':
+            this.xSpeed = -scale;
+            this.ySpeed = 0;
+            break;
+          case 'Right':
+            this.xSpeed = scale;
+            this.ySpeed = 0;
+            break;
+        }
+      }
+
+      this.checkCollision = function() {
+        for (let i=0; i<this.tail.length; i++) {
+          if (this.x === this.tail[i].x && this.y === this.tail[i].y) {
+            this.total = 0;
+            this.tail = [];
+            score = 0;
+            scoreboard.textContent = 'Score: ' + score;
+          }
+        }
+      }
+
+      // ...
+
+  this.eat = function (fruit) {
+    if (this.x === fruit.x && this.y === fruit.y) {
+      this.total++;
+      updateScoreboard(this.total);
+
+      let newFruitLocation;
+      do {
+        fruit.pickLocation();
+        newFruitLocation = !this.tail.some(segment => segment.x === fruit.x && segment.y === fruit.y) && (this.x !== fruit.x || this.y !== fruit.y);
+      } while (!newFruitLocation);
+
+      return true;
+    }
+    return false;
+  };
+
+  // ...
+
+  this.checkCollision = function () {
+    for (let i = 1; i < this.tail.length; i++) {
+      if (this.x === this.tail[i].x && this.y === this.tail[i].y) {
+        this.total = 0;
+        this.tail = [];
+        updateScoreboard(this.total);
+      }
+    }
+  };
+
+  // ...
+
+  function Fruit() {
+    this.x;
+    this.y;
+
+    this.pickLocation = function () {
+      this.x = (Math.floor(Math.random() * columns)) * scale;
+      this.y = (Math.floor(Math.random() * rows)) * scale;
+    };
+
+    this.draw = function () {
+      context.fillStyle = "#FF0000";
+      context.fillRect(this.x, this.y, scale, scale);
+    };
+  }
+
+  // ...
+
+  function updateScoreboard(score) {
+    scoreboard.textContent = "Score: " + score;
+
+    if (score > highScore) {
+      highScore = score;
+      localStorage.setItem('highScore', highScore);
+      document.getElementById('high-score').innerText = `High Score: ${highScore}`;
+    }
+  }
+
+  // ...
+
+  function draw() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    snake.update();
+    snake.draw();
+
+    if (snake.eat(fruit)) {
+      fruit.pickLocation();
+    }
+
+    fruit.draw();
+    snake.checkCollision();
+
+    requestAnimationFrame(draw);
+  }
+
+  // ...
+
+  function start() {
+    snake = new Snake();
+    fruit = new Fruit();
+    fruit.pickLocation();
+    draw();
+  }
+
+  start();
+
