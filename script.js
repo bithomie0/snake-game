@@ -129,11 +129,13 @@ function Snake() {
       this.y = 0;
     }
 
-    if (fruit.eaten) { // check if the current fruit has been eaten
+    if (this.x === fruit.x && this.y === fruit.y) {
+      this.total++;
+      updateScoreboard(this.total);
       fruit.pickLocation();
-      fruit.eaten = false; // mark the new fruit as not eaten
     }
   };
+
 
 
   this.changeDirection = function (direction) {
