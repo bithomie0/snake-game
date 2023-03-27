@@ -10,14 +10,11 @@ let snake;
 let fruit;
 let highScore = 0;
 
-// ...
-
 (function setup() {
   snake = new Snake();
   fruit = new Fruit();
 
-  // remove this line from here
-  // fruit.pickLocation();
+  fruit.pickLocation();
 
   fruit.eaten = false; // Set the initial fruit as not eaten
 
@@ -45,16 +42,7 @@ let highScore = 0;
     fruit.draw();
     snake.checkCollision();
   }, 250);
-
-  // add this line here
-  fruit.pickLocation();
-
 })();
-
-// ...
-
-
-
 
 document.addEventListener("keydown", (event) => {
   const direction = event.key.replace("Arrow", "");
@@ -71,7 +59,6 @@ canvas.addEventListener("touchstart", (event) => {
     snake.changeDirection(direction);
   }
 });
-
 
 function getSwipeDirection(event, startX, startY) { // Add event as an argument
   const endX = event.changedTouches[0].clientX;
@@ -124,143 +111,30 @@ function Snake() {
     }
 
     if (this.y < 0) {
-      this.y = canvas.height - scale;
-    } else if (this.y > canvas.height - scale) {
-      this.y = 0;
-    }
-
-    if (this.x === fruit.x && this.y === fruit.y) {
-      this.total++;
-      updateScoreboard(this.total);
-      fruit.pickLocation();
-    }
-  };
-
-
-
-  this.changeDirection = function (direction) {
-    switch (direction) {
-      case "Up":
-        if (this.ySpeed === 0) {
-          this.xSpeed = 0;
-          this.ySpeed = -scale;
-        }
-        break;
-      case "Down":
-        if (this.ySpeed === 0) {
-          this.xSpeed = 0;
-          this.ySpeed = scale;
-        }
-        break;
-      case "Left":
-        if (this.xSpeed === 0) {
-          this.xSpeed = -scale;
-          this.ySpeed = 0;
-        }
-        break;
-      case "Right":
-        if (this.xSpeed === 0) {
-          this.xSpeed = scale;
-          this.ySpeed = 0;
-        }
-        break;
-    }
-  };
-
-  // ...
-
-    this.eat = function (fruit) {
-      if (this.x === fruit.x && this.y === fruit.y) {
-        this.total++;
-        updateScoreboard(this.total);
-        fruit.eaten = true;
-
-        let newFruitLocation;
-        do {
-          fruit.pickLocation();
-          newFruitLocation = !this.tail.some(segment => segment.x === fruit.x && segment.y === fruit.y) && (this.x !== fruit.x || this.y !== fruit.y);
-        } while (!newFruitLocation);
-
-        fruit.eaten = false;
-        return true;
-      }
-      return false;
-    };
-
-
-
-
-// ...
-
-
-  this.checkCollision = function () {
-    for (let i = 1; i < this.tail.length; i++) {
-      if (this.x === this.tail[i].x && this.y === this.tail[i].y) {
-        this.total = 0;
-        this.tail = [];
-      }
-    }
-  };
-
-
-// ...
-
-function Fruit() {
-  this.x;
-  this.y;
-  this.eaten = false;
-
-  this.pickLocation = function () {
-    let validLocation;
-    do {
-      this.x = (Math.floor(Math.random() * columns)) * scale;
-      this.y = (Math.floor(Math.random() * rows)) * scale;
-      validLocation = !snake.tail.some(segment => segment.x === this.x && segment.y === this.y) && (this.x !== snake.x || this.y !== snake.y);
-    } while (!validLocation);
-
-    this.eaten = false; // set eaten property to false
-  };
-
-
-  this.draw = function () {
-    if (!this.eaten) {
-      context.fillStyle = "#FF0000";
-      context.fillRect(this.x, this.y, scale, scale);
-    }
-  };
+  this.y = canvas.height - scale;
+} else if (this.y > canvas.height - scale) {
+  this.y = 0;
 }
 
-
-// ...
-
-
-function updateScoreboard(score) {
-  scoreboard.textContent = "Score: " + score;
-  
-  if (score > highScore) {
-   highScore = score;
-   localStorage.setItem('highScore', highScore);
-  }
-  
-  document.getElementById('high-score').innerText = `High Score: ${highScore}`;
+if (this.x === fruit.x && this.y === fruit.y && !fruit.eaten) {
+  this.total++;
+  updateScoreboard(this.total);
+  fruit.eaten = true;
 }
 
-canvas.addEventListener("click", (event) => {
-  const clickX = event.clientX - canvas.getBoundingClientRect().left;
-  const clickY = event.clientY - canvas.getBoundingClientRect().top;
-
-  const direction = getMouseDirection(clickX, clickY);
-  snake.changeDirection(direction);
-});
-
-function getMouseDirection(clickX, clickY) {
-  const deltaX = clickX - snake.x;
-  const deltaY = clickY - snake.y;
-
-  if (Math.abs(deltaX) > Math.abs(deltaY)) {
-    return deltaX > 0 ? "Right" : "Left";
-  } else {
-    return deltaY > 0 ? "Down" : "Up";
+for (let i = 0; i < this.tail.length; i++) {
+  if (this.x === this.tail[i].x && this.y === this.tail[i].y) {
+    this.total = 0;
+    this.tail = [];
   }
 }
+
+this.tail.push({ x: this.x, y: this.y });
+while (this.tail.length > this.total) {
+  this.tail.shift();
+}
+
+this.x += this.xSpeed;
+this.y += this.ySpeed;
+};
 
