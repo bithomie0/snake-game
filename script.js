@@ -10,11 +10,13 @@ let snake;
 let fruit;
 let highScore = 0;
 
+// ...
+
 (function setup() {
   snake = new Snake();
   fruit = new Fruit();
 
-  fruit.pickLocation();
+  // fruit.pickLocation(); <- remove from here
   fruit.eaten = false; // Set the initial fruit as not eaten
   
   if (localStorage.getItem('highScore')) {
@@ -41,7 +43,10 @@ let highScore = 0;
     snake.checkCollision();
   }, 250);
 
+  fruit.pickLocation(); // <- add here
+
 })();
+
 
 
 document.addEventListener("keydown", (event) => {
