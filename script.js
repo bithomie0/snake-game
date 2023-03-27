@@ -13,10 +13,7 @@ let highScore = 0;
 (function setup() {
   snake = new Snake();
   fruit = new Fruit();
-
   fruit.pickLocation();
-
-  fruit.eaten = false; // Set the initial fruit as not eaten
 
   if (localStorage.getItem('highScore')) {
     highScore = parseInt(localStorage.getItem('highScore'));
@@ -31,17 +28,15 @@ let highScore = 0;
     snake.draw();
 
     if (snake.eat(fruit)) {
-      console.log("snake ate the fruit");
       do {
         fruit.pickLocation();
       } while (snake.tail.some(segment => segment.x === fruit.x && segment.y === fruit.y));
-      fruit.eaten = false; // Mark the new fruit as not eaten
-      console.log("fruit position updated");
     }
 
     fruit.draw();
     snake.checkCollision();
   }, 250);
+
 })();
 
 document.addEventListener("keydown", (event) => {
@@ -111,30 +106,60 @@ function Snake() {
     }
 
     if (this.y < 0) {
-  this.y = canvas.height - scale;
-} else if (this.y > canvas.height - scale) {
-  this.y = 0;
-}
+      this.y = canvas.height - scale;
+    } else if (this.y > canvas.height - scale) {
+      this.y = 0;
+    }
 
-if (this.x === fruit.x && this.y === fruit.y && !fruit.eaten) {
-  this.total++;
-  updateScoreboard(this.total);
-  fruit.eaten = true;
-}
+    if (this.eat(fruit)) {
+      fruit.pickLocation();
+    }
+  };
 
-for (let i = 0; i < this.tail.length; i++) {
-  if (this.x === this.tail[i].x && this.y === this.tail[i].y) {
-    this.total = 0;
-    this.tail = [];
-  }
-}
+  this.changeDirection = function (direction) {
+    switch (direction) {
+      case "Up":
+        if (this.ySpeed === 0) {
+          this.xSpeed = 0;
+          this.ySpeed = -scale;
+        }
+        break;
+      case "Down":
+        if (this.ySpeed === 0) {
+          this.xSpeed = 0;
+          this.ySpeed = scale;
+        }
+        break;
+      case "Left":
+        if (this.xSpeed === 0) {
+          this.xSpeed = -scale;
+          this.ySpeed = 0;
+        }
+        break;
+      case "Right":
+        if (this.xSpeed === 0) {
+          this.xSpeed = scale;
+          this.ySpeed = 0;
+        }
+        break;
+    }
+  };
 
-this.tail.push({ x: this.x, y: this.y });
-while (this.tail.length > this.total) {
-  this.tail.shift();
-}
+  this.eat = function (fruit) {
+    if (this.x === fruit.x && this.y === fruit.y) {
+      this.total++;
+      return true;
+    }
+    return false;
+  };
 
-this.x += this.xSpeed;
-this.y += this.ySpeed;
-};
+  this.checkCollision = function () {
+    for (let i = 1; i < this.tail.length; i++) {
+      if (this.x === this.tail[i].x && this.y === this.tail[i].y) {
+        this.total = 0;
+        this.tail = [];
+      }
+    }
+  };
+}
 
