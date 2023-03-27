@@ -35,9 +35,10 @@ let highScore = 0;
       do {
         fruit.pickLocation();
       } while (snake.tail.some(segment => segment.x === fruit.x && segment.y === fruit.y));
-      
       fruit.eaten = false; // Mark the new fruit as not eaten
+      console.log("fruit position updated");
     }
+
 
     fruit.draw();
     snake.checkCollision();
