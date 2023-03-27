@@ -16,15 +16,17 @@ let highScore = 0;
   snake = new Snake();
   fruit = new Fruit();
 
-  // fruit.pickLocation(); <- remove from here
+  // remove this line from here
+  // fruit.pickLocation();
+
   fruit.eaten = false; // Set the initial fruit as not eaten
-  
+
   if (localStorage.getItem('highScore')) {
     highScore = parseInt(localStorage.getItem('highScore'));
   } else {
     highScore = 0;
   }
-  
+
   window.setInterval(() => {
     context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -40,14 +42,17 @@ let highScore = 0;
       console.log("fruit position updated");
     }
 
-
     fruit.draw();
     snake.checkCollision();
   }, 250);
 
-  fruit.pickLocation(); // <- add here
+  // add this line here
+  fruit.pickLocation();
 
 })();
+
+// ...
+
 
 
 
