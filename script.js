@@ -214,6 +214,7 @@ function Fruit() {
     this.eaten = false; // set eaten property to false
   };
 
+
   this.draw = function () {
     if (!this.eaten) {
       context.fillStyle = "#FF0000";
