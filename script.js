@@ -32,6 +32,7 @@ let highScore = 0;
     snake.draw();
 
     if (snake.eat(fruit)) {
+      console.log("snake ate the fruit");
       do {
         fruit.pickLocation();
       } while (snake.tail.some(segment => segment.x === fruit.x && segment.y === fruit.y));
