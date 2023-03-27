@@ -174,12 +174,19 @@ function Snake() {
         this.total++;
         updateScoreboard(this.total);
         fruit.eaten = true;
-        fruit.pickLocation();
+
+        let newFruitLocation;
+        do {
+          fruit.pickLocation();
+          newFruitLocation = !this.tail.some(segment => segment.x === fruit.x && segment.y === fruit.y) && (this.x !== fruit.x || this.y !== fruit.y);
+        } while (!newFruitLocation);
+
         fruit.eaten = false;
         return true;
       }
       return false;
     };
+
 
 
 
